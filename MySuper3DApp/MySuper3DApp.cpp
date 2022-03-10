@@ -4,7 +4,8 @@
 #include <windows.h>
 #include <WinUser.h>
 #include <iostream>
-
+#include <d3d.h>
+#include <d3d11.h>
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam) {
 
@@ -29,6 +30,8 @@ int main()
 {
 	LPCWSTR applicationName = L"My3DApp";
 	HINSTANCE hInstance = GetModuleHandle(nullptr);
+
+#pragma region Window init
     WNDCLASSEX wc;
 
 	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
@@ -68,8 +71,37 @@ int main()
 	ShowWindow(hWnd, SW_SHOW);
 	SetForegroundWindow(hWnd);
 	SetFocus(hWnd);
-
+	
 	ShowCursor(true);
+
+
+#pragma endregion Window init
+
+	auto res = D3D11CreateDeviceAndSwapChain(
+		nullptr,
+		D3D_DRIVER_TYPE_HARDWARE,
+		nullptr,
+		D3D11_CREATE_DEVICE_DEBUG,
+		featureLevel,
+		1,
+		D3D11_SDK_VERSION,
+		swapDesc,
+		swapChain,
+		device,
+		nullptr,
+		context);
+
+	if(FAILED(res)) {
+		
+	}
+
+
+
+
+
+
+
+
 
 	MSG msg = {};
 	bool isExitRequested = false;
