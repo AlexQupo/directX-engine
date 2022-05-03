@@ -233,7 +233,7 @@ int main()
 	int indeces[] = { 0,1,2, 1,0,3 };
 	D3D11_BUFFER_DESC indexBufDesc = {};
 	indexBufDesc.Usage = D3D11_USAGE_DEFAULT;
-	indexBufDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	indexBufDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	indexBufDesc.CPUAccessFlags = 0;
 	indexBufDesc.MiscFlags = 0;
 	indexBufDesc.StructureByteStride = 0;
@@ -250,13 +250,7 @@ int main()
 	UINT strides[] = { 32 };
 	UINT offsets[] = { 0 };
 
-	context->IASetInputLayout(layout);
-	context->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	context->IASetIndexBuffer(ib, DXGI_FORMAT_R32_UINT, 0);
-	context->IASetVertexBuffers(0, 1, &vb, strides, offsets);
-
-	context->VSSetShader(vertexShader, nullptr, 0);
-	context->PSSetShader(pixelShader, nullptr, 0);
+	
 
 	CD3D11_RASTERIZER_DESC rastDesc = {};
 	rastDesc.CullMode = D3D11_CULL_NONE;
@@ -267,15 +261,7 @@ int main()
 
 	context->RSSetState(rastState);
 
-	D3D11_VIEWPORT viewport = {};
-	viewport.Width = static_cast<float>(screenWidth);
-	viewport.Height = static_cast<float>(screenHeight);
-	viewport.TopLeftX = 0;
-	viewport.TopLeftY = 0;
-	viewport.MinDepth = 0;
-	viewport.MaxDepth = 1.0f;
-
-	context->RSSetViewports(1, &viewport);
+	
 
 	std::chrono::time_point<std::chrono::steady_clock> PrevTime = std::chrono::steady_clock::now();
 	float totalTime = 0;
@@ -297,7 +283,28 @@ int main()
 
 		//Тут начинается кадр
 
-		//context->ClearState();
+		context->ClearState();
+		context->RSSetState(rastState);
+
+		context->IASetInputLayout(layout);
+		context->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		context->IASetIndexBuffer(ib, DXGI_FORMAT_R32_UINT, 0);
+		context->IASetVertexBuffers(0, 1, &vb, strides, offsets);
+
+		context->VSSetShader(vertexShader, nullptr, 0);
+		context->PSSetShader(pixelShader, nullptr, 0);
+
+
+		D3D11_VIEWPORT viewport = {};
+		viewport.Width = static_cast<float>(screenWidth);
+		viewport.Height = static_cast<float>(screenHeight);
+		viewport.TopLeftX = 0;
+		viewport.TopLeftY = 0;
+		viewport.MinDepth = 0;
+		viewport.MaxDepth = 1.0f;
+
+		context->RSSetViewports(1, &viewport);
+
 		//4.00.59
 
 		//Вывод fps
@@ -323,7 +330,7 @@ int main()
 
 		context->OMSetRenderTargets(1, &rtv, nullptr);
 
-		float color[] = { 0.1f, 0.1f, 0.1f, 1.0f };
+		float color[] = { totalTime , 0.1f, 0.1f, 1.0f };
 		context->ClearRenderTargetView(rtv, color);
 
 		context->DrawIndexed(6, 0, 0);
