@@ -37,6 +37,23 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam)
 	}
 }
 
+//--InProcess
+bool MessageHandler(MSG msg) {
+
+	//MSG msg = {};
+	//ZeroMemory(&msg, sizeof(MSG)); // what is it?
+
+	while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+
+	if (msg.message == WM_QUIT) {
+		return false;
+	}
+	return true;
+}
+
 int main()
 {
 
@@ -49,7 +66,8 @@ int main()
 	HINSTANCE hInstance = GetModuleHandle(nullptr);
 	HWND hWnd;
 
-	DisplayWin32(L"My3DApp", screenHeight, screenWidth, hInstance, WndProc, hWnd);
+	DisplayWin32 Display = DisplayWin32(L"My3DApp", screenHeight, screenWidth, hInstance, WndProc, hWnd);
+	//DisplayWin32(L"My3DApp", screenHeight, screenWidth, hInstance, WndProc, hWnd);
 
 #pragma endregion Window init
 
@@ -239,14 +257,15 @@ int main()
 	bool isExitRequested = false;
 	while(!isExitRequested) {
 
-		while(PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
+		isExitRequested = !MessageHandler(msg);
+		/*while(PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
 
 		if(msg.message == WM_QUIT) {
 			isExitRequested = true;
-		}
+		}*/
 
 		//Тут начинается кадр
 
