@@ -10,12 +10,13 @@ private:
 	int clientHeight = 0;
 	int clientWidth = 0;
 	HINSTANCE hInstance = nullptr;
-	HWND hWnd;
+	HWND hWnd = nullptr;
 	WNDPROC WndProc;
 	WNDCLASSEX wc;
+	void RegisterWindowClass();
 public:
 
-	bool Initialize(LPCWSTR appName, int Height, int Width, WNDPROC MessageHandler);
+	bool Initialize(LPCWSTR appName, int Height, int Width);
 	bool ProcessMessages();
 	~Display();
 };

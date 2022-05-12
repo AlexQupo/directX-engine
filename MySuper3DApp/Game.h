@@ -6,6 +6,6 @@ class Game : Display
 protected:
 	Display display;
 public:
-	bool Initialize(LPCWSTR appName, int Height, int Width, HINSTANCE hInst, WNDPROC MessageHandler, HWND& handlerWindow);
+	bool Initialize(LPCWSTR appName, int Height, int Width);
 
 };
