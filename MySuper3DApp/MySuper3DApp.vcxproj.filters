@@ -18,7 +18,7 @@
     <ClCompile Include="MySuper3DApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DisplayWin32.cpp">
+    <ClCompile Include="Display.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="InputDevice.cpp">
@@ -32,7 +32,7 @@
     <ClInclude Include="InputDevice.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DisplayWin32.h">
+    <ClInclude Include="Display.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">

@@ -1,10 +1,14 @@
-#include "DisplayWin32.h"
+#include "Display.h"
 
-bool DisplayWin32::Initialize(LPCWSTR appName, int Height, int Width, HINSTANCE hInst, WNDPROC MessageHandler, HWND &handlerWindow)
-	: applicationName(appName), clientHeight(Height), clientWidth(Width), hInstance(hInst), WndProc(MessageHandler), hWnd(handlerWindow) {
+bool Display::Initialize(LPCWSTR appName, int height, int width, WNDPROC MessageHandler) {
+
+	applicationName = appName;
+	clientHeight = height;
+	clientWidth = width;
+	WndProc = MessageHandler;
 
 	//Блок регистрации окна
-
+	hInstance = GetModuleHandle(nullptr);
 	//WNDCLASSEX wc - рассширенный класс окна. необходимо заполнить его до создания (регистрации)
 	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC; //устанавливает стиль окна, когда оно перерисовывается
 	wc.lpfnWndProc = WndProc; //указатель на функцию для обработки сообщений из окна
@@ -49,8 +53,8 @@ bool DisplayWin32::Initialize(LPCWSTR appName, int Height, int Width, HINSTANCE 
 	return true;
 }
 
-DisplayWin32::~DisplayWin32() {
-	if(this->hWnd !=NULL)
+Display::~Display() {
+	if(this->hWnd != nullptr)
 	{
 		UnregisterClass(this->applicationName, this->hInstance);
 		DestroyWindow(hWnd);

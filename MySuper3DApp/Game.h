@@ -1,10 +1,10 @@
 #pragma once
-#include "DisplayWin32.h"
+#include "Display.h"
 
-class Game : DisplayWin32
+class Game : Display
 {
 protected:
-	DisplayWin32 display;
+	Display display;
 public:
 	bool Initialize(LPCWSTR appName, int Height, int Width, HINSTANCE hInst, WNDPROC MessageHandler, HWND& handlerWindow);
 
