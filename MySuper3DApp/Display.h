@@ -11,9 +11,10 @@ private:
 	int clientWidth = 0;
 	HINSTANCE hInstance = nullptr;
 	HWND hWnd = nullptr;
-	WNDPROC WndProc;
+	//WNDPROC WndProc;
 	WNDCLASSEX wc;
 	void RegisterWindowClass();
+	//LRESULT CALLBACK WndProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam);
 public:
 
 	bool Initialize(LPCWSTR appName, int Height, int Width);

@@ -4,3 +4,6 @@
 //	: applicationName(appName), clientHeight(Height), clientWidth(Width), hInstance(hInst), WndProc(MessageHandler), hWnd(handlerWindow) {
 //	return this->display.Initialize
 //}
+void Game::Update() {
+
+}

@@ -4,8 +4,9 @@
 class Game : Display
 {
 protected:
-	Display display;
+	//Display display;
 public:
 	bool Initialize(LPCWSTR appName, int Height, int Width);
-
+	bool ProcessMessages();
+	void Update();
 };

@@ -19,23 +19,23 @@
 #pragma comment(lib, "d3dcompiler.lib")
 #pragma comment(lib, "dxguid.lib")
 
-LRESULT CALLBACK WndProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam) {
-
-	switch (umessage) {
-
-	case WM_KEYDOWN: {
-
-		std::cout << "Key: " << static_cast<unsigned int>(wparam) << std::endl;
-
-		if (static_cast<unsigned int>(wparam) == 27) PostQuitMessage(0);
-		return 0;
-	}
-
-	default: {
-			return DefWindowProc(hwnd, umessage, wparam, lparam);
-		}
-	}
-}
+//LRESULT CALLBACK WndProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam) {
+//
+//	switch (umessage) {
+//
+//	case WM_KEYDOWN: {
+//
+//		std::cout << "Key: " << static_cast<unsigned int>(wparam) << std::endl;
+//
+//		if (static_cast<unsigned int>(wparam) == 27) PostQuitMessage(0);
+//		return 0;
+//	}
+//
+//	default: {
+//			return DefWindowProc(hwnd, umessage, wparam, lparam);
+//		}
+//	}
+//}
 
 //--InProcess
 //bool MessageHandler(MSG msg) {

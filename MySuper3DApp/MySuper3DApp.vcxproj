@@ -144,12 +144,16 @@
     <ClCompile Include="Display.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="InputDevice.cpp" />
+    <ClCompile Include="KeyboardClass.cpp" />
+    <ClCompile Include="KeyboardEvent.cpp" />
     <ClCompile Include="MySuper3DApp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Display.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="InputDevice.h" />
+    <ClInclude Include="KeyboardClass.h" />
+    <ClInclude Include="KeyboardEvent.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

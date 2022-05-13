@@ -1,5 +1,18 @@
 #include "Display.h"
 
+LRESULT CALLBACK WndProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam) {
+
+	switch (umessage) {
+
+	case WM_KEYDOWN: {
+		if (static_cast<unsigned int>(wparam) == 27) PostQuitMessage(0);
+		return 0;
+	}
+	default:
+		return DefWindowProc(hwnd, umessage, wparam, lparam);
+	}
+}
+
 bool Display::Initialize(LPCWSTR appName, int height, int width) {
 
 	applicationName = appName;
@@ -43,7 +56,7 @@ void Display::RegisterWindowClass() {
 	hInstance = GetModuleHandle(nullptr);
 	//WNDCLASSEX wc - рассширенный класс окна. необходимо заполнить его до создания (регистрации)
 	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC; //устанавливает стиль окна, когда оно перерисовывается
-	wc.lpfnWndProc = DefWindowProc; //указатель на функцию для обработки сообщений из окна                  !!!!!!!!!!!WndProc!!!!!!!!!!!!!
+	wc.lpfnWndProc = WndProc; //указатель на функцию для обработки сообщений из окна                  !!!!!!!!!!!WndProc!!!!!!!!!!!!!
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.hInstance = hInstance; //дескриптор (обработчик) экземплера, содержащего оконную процедуру
@@ -76,6 +89,7 @@ bool Display::ProcessMessages() {
 	}
 	return true;
 }
+
 
 
 Display::~Display() {
