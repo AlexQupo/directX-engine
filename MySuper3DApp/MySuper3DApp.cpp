@@ -11,7 +11,7 @@
 #include <directxmath.h>
 #include <chrono>
 
-#include "Display.h"
+#include "Engine.h"
 
 
 #pragma comment(lib, "d3d11.lib")
@@ -66,11 +66,16 @@ int main()
 	//HINSTANCE hInstance = GetModuleHandle(nullptr);
 	//HWND hWnd;
 
-	Display display;
+	Engine engine;
+	engine.Initialize(applicationName, screenHeight, screenWidth);
+	while (engine.ProcessMessages() == true) {
+
+	}
+	/*Display display;
 	display.Initialize(L"My3DApp", screenHeight, screenWidth);
 	while (display.ProcessMessages() == true) {
 		
-	}
+	}*/
 	//DisplayWin32(L"My3DApp", screenHeight, screenWidth, hInstance, WndProc, hWnd);
 
 #pragma endregion Window init

@@ -1,19 +1,48 @@
-#include "Display.h"
+#include "WindowContainer.h"
 
-LRESULT CALLBACK WndProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam) {
+LRESULT CALLBACK HandleMsgRedirect(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam) {
+	switch (umessage) {
+		//all other messages
+	case WM_CLOSE:
+	{
+		DestroyWindow(hwnd);
+		return 0;
+	}
+	default:
+	{
+		//retrieve ptr to window class
+		WindowContainer* const pWindow = reinterpret_cast<WindowContainer*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+		//forward message to window class handler
+		return pWindow->WndProc(hwnd, umessage, wparam, lparam);
+	}
+	}
+
+}
+
+LRESULT CALLBACK HandleMessageSetup(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam) {
 
 	switch (umessage) {
 
-	case WM_KEYDOWN: {
-		if (static_cast<unsigned int>(wparam) == 27) PostQuitMessage(0);
-		return 0;
+	case WM_NCCREATE:
+	{
+		const CREATESTRUCTW* const pCreate = reinterpret_cast<CREATESTRUCTW*>(lparam);
+		WindowContainer* pWindow = reinterpret_cast<WindowContainer*>(pCreate->lpCreateParams);
+		if (pWindow == nullptr) {
+			//ErrorLogger::Log("Critical Error: Pointer to window container is null during WM_NCCREATE.");
+			exit(-1);
+		}
+		SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pWindow));
+
+		SetWindowLongPtr(hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(HandleMsgRedirect));
+		return pWindow->WndProc(hwnd, umessage, wparam, lparam);
 	}
 	default:
 		return DefWindowProc(hwnd, umessage, wparam, lparam);
 	}
 }
 
-bool Display::Initialize(LPCWSTR appName, int height, int width) {
+
+bool Display::Initialize(WindowContainer* pWindowContainer, LPCWSTR appName, int height, int width) {
 
 	applicationName = appName;
 	clientHeight = height;
@@ -36,7 +65,10 @@ bool Display::Initialize(LPCWSTR appName, int height, int width) {
 		posX, posY,
 		windowRect.right - windowRect.left,
 		windowRect.bottom - windowRect.top,
-		nullptr, nullptr, hInstance, nullptr);
+		nullptr, 
+		nullptr, 
+		hInstance, 
+		pWindowContainer); //Param to create window
 
 	if(hWnd == nullptr) {
 		//ErrorLogger::Log(GetLastError(),"CreateWindowEX Failed for window: " + applicationName);
@@ -56,7 +88,7 @@ void Display::RegisterWindowClass() {
 	hInstance = GetModuleHandle(nullptr);
 	//WNDCLASSEX wc - рассширенный класс окна. необходимо заполнить его до создания (регистрации)
 	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC; //устанавливает стиль окна, когда оно перерисовывается
-	wc.lpfnWndProc = WndProc; //указатель на функцию для обработки сообщений из окна                  !!!!!!!!!!!WndProc!!!!!!!!!!!!!
+	wc.lpfnWndProc = HandleMessageSetup; //указатель на функцию для обработки сообщений из окна                  !!!!!!!!!!!WndProc!!!!!!!!!!!!!
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.hInstance = hInstance; //дескриптор (обработчик) экземплера, содержащего оконную процедуру
@@ -89,8 +121,6 @@ bool Display::ProcessMessages() {
 	}
 	return true;
 }
-
-
 
 Display::~Display() {
 	if(this->hWnd != nullptr)

@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <WinUser.h>
 
+class WindowContainer;
 
 class Display
 {
@@ -14,10 +15,10 @@ private:
 	//WNDPROC WndProc;
 	WNDCLASSEX wc;
 	void RegisterWindowClass();
-	//LRESULT CALLBACK WndProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam);
+	//LRESULT WndProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam);
 public:
 
-	bool Initialize(LPCWSTR appName, int Height, int Width);
+	bool Initialize(WindowContainer* pWindowContainer, LPCWSTR appName, int height, int width);
 	bool ProcessMessages();
 	~Display();
 };

@@ -30,14 +30,17 @@
     <ClCompile Include="InputDevice.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cpp">
+    <ClCompile Include="Engine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="KeyboardEvent.cpp">
+    <ClCompile Include="Keyboard\KeyboardEvent.cpp">
       <Filter>Source Files\Keyboard</Filter>
     </ClCompile>
-    <ClCompile Include="KeyboardClass.cpp">
+    <ClCompile Include="Keyboard\KeyboardClass.cpp">
       <Filter>Source Files\Keyboard</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowContainer.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -47,14 +50,17 @@
     <ClInclude Include="Display.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game.h">
+    <ClInclude Include="Engine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="KeyboardEvent.h">
+    <ClInclude Include="Keyboard\KeyboardEvent.h">
       <Filter>Header Files\Keyboard</Filter>
     </ClInclude>
-    <ClInclude Include="KeyboardClass.h">
+    <ClInclude Include="Keyboard\KeyboardClass.h">
       <Filter>Header Files\Keyboard</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowContainer.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
