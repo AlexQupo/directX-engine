@@ -2,6 +2,8 @@
 #include <Windows.h>
 #include <WinUser.h>
 
+#include "ErrorLogger.h"
+
 class WindowContainer;
 
 class Display

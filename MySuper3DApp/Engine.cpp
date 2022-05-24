@@ -9,14 +9,14 @@ bool Engine::ProcessMessages() {
 	return this->display.ProcessMessages();
 }
 
+void Engine::Update() {
+	while (!keyboard.CharBufferIsEmpty()) {
+		unsigned char ch = keyboard.ReadChar();
+	}
+	while (!keyboard.KeyBufferIsEmpty()) {
+		KeyboardEvent kbe = keyboard.ReadKey();
+		unsigned char keycode = kbe.GetKeyCode();
+	}
+}
 
-
-//LRESULT Game::WindowProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam) {
-//	OutputDebugStringA("AAAAA");
-//	return DefWindowProc(hwnd, umessage, wparam, lparam);
-//}
-//
-//void Game::Update() {
-//	//while(!keyboard.CharBufferIsEmpty())
-//}
 

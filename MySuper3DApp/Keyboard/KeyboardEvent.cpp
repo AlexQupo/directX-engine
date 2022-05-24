@@ -9,7 +9,7 @@ KeyboardEvent::KeyboardEvent()
 
 KeyboardEvent::KeyboardEvent(const EventType type, const unsigned char key)
 	:
-	type(),
+	type(type),
 	key(key)
 {
 }

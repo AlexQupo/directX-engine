@@ -69,7 +69,7 @@ int main()
 	Engine engine;
 	engine.Initialize(applicationName, screenHeight, screenWidth);
 	while (engine.ProcessMessages() == true) {
-
+		engine.Update();
 	}
 	/*Display display;
 	display.Initialize(L"My3DApp", screenHeight, screenWidth);
