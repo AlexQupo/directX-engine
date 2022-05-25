@@ -14,6 +14,7 @@
 #include "Engine.h"
 
 
+#pragma comment(lib, "DirectXTK.lib")
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3dcompiler.lib")
@@ -276,7 +277,7 @@ int main()
 //			isExitRequested = true;
 //		}*/
 //
-//		//Тут начинается кадр
+//		//пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 //
 //		context->ClearState();
 //		context->RSSetState(rastState);
@@ -302,7 +303,7 @@ int main()
 //
 //		//4.00.59
 //
-//		//Вывод fps
+//		//пїЅпїЅпїЅпїЅпїЅ fps
 //		auto curTime = std::chrono::steady_clock::now();
 //		float deltaTime = std::chrono::duration_cast<std::chrono::microseconds>(curTime - PrevTime).count() / 1000000.0f;
 //		PrevTime = curTime;
@@ -321,7 +322,7 @@ int main()
 //
 //			frameCount = 0;
 //		}
-//		//Конец вывода fps
+//		//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ fps
 //
 //		context->OMSetRenderTargets(1, &rtv, nullptr);
 //
