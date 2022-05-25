@@ -147,6 +147,8 @@
     <ClCompile Include="InputDevice.cpp" />
     <ClCompile Include="Keyboard\KeyboardClass.cpp" />
     <ClCompile Include="Keyboard\KeyboardEvent.cpp" />
+    <ClCompile Include="Mouse\MouseClass.cpp" />
+    <ClCompile Include="Mouse\MouseEvent.cpp" />
     <ClCompile Include="MySuper3DApp.cpp" />
     <ClCompile Include="StringConverter.cpp" />
     <ClCompile Include="WindowContainer.cpp" />
@@ -158,6 +160,8 @@
     <ClInclude Include="InputDevice.h" />
     <ClInclude Include="Keyboard\KeyboardClass.h" />
     <ClInclude Include="Keyboard\KeyboardEvent.h" />
+    <ClInclude Include="Mouse\MouseClass.h" />
+    <ClInclude Include="Mouse\MouseEvent.h" />
     <ClInclude Include="StringConverter.h" />
     <ClInclude Include="WindowContainer.h" />
   </ItemGroup>
