@@ -4,8 +4,9 @@
 class Engine : WindowContainer
 {
 public:
-	bool Initialize(LPCWSTR appName, int height, int width);
+	bool Initialize(LPCWSTR appName, int width, int height);
 	bool ProcessMessages();
 
 	void Update();
+	void RenderFrame();
 };

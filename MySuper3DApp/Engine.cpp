@@ -1,8 +1,14 @@
 #include "Engine.h"
 
 
-bool Engine::Initialize(LPCWSTR appName, int height, int width) {
-	return this->display.Initialize(this, appName, height, width);
+bool Engine::Initialize(LPCWSTR appName, int width, int height) {
+	if(!this->display.Initialize(this, appName, width, height))
+		return false;
+
+	if(!gfx.Initialize(this->display.GetHWND(), width, height))
+		return false;
+
+	return true;
 }
 
 bool Engine::ProcessMessages() {
@@ -21,6 +27,11 @@ void Engine::Update() {
 	while(!mouse.EventBufferIsEmpty()) {
 		MouseEvent me = mouse.ReadEvent();
 	}
+}
+
+void Engine::RenderFrame()
+{
+	gfx.RenderFrame();
 }
 
 

@@ -42,7 +42,7 @@ LRESULT CALLBACK HandleMessageSetup(HWND hwnd, UINT umessage, WPARAM wparam, LPA
 }
 
 
-bool Display::Initialize(WindowContainer* pWindowContainer, LPCWSTR appName, int height, int width) {
+bool Display::Initialize(WindowContainer* pWindowContainer, LPCWSTR appName, int width, int height) {
 
 	applicationName = appName;
 	clientHeight = height;
@@ -120,6 +120,11 @@ bool Display::ProcessMessages() {
 		}
 	}
 	return true;
+}
+
+HWND Display::GetHWND() const
+{
+	return this->hWnd;
 }
 
 Display::~Display() {

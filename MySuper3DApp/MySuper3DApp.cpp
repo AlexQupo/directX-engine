@@ -16,9 +16,10 @@
 
 #pragma comment(lib, "DirectXTK.lib")
 #pragma comment(lib, "d3d11.lib")
-#pragma comment(lib, "dxgi.lib")
-#pragma comment(lib, "d3dcompiler.lib")
-#pragma comment(lib, "dxguid.lib")
+
+//#pragma comment(lib, "dxgi.lib")
+//#pragma comment(lib, "d3dcompiler.lib")
+//#pragma comment(lib, "dxguid.lib")
 
 //LRESULT CALLBACK WndProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam) {
 //
@@ -68,10 +69,27 @@ int main()
 	//HWND hWnd;
 
 	Engine engine;
-	engine.Initialize(applicationName, screenHeight, screenWidth);
-	while (engine.ProcessMessages() == true) {
-		engine.Update();
+	if(engine.Initialize(applicationName, screenWidth, screenHeight)) {
+		while (engine.ProcessMessages() == true) {
+			engine.Update();
+			engine.RenderFrame();
+		}
 	}
+	
+
+	//INPUT ASSEBLER - completed
+	//VERTEX SHADER - completed
+	//RASTERIZER - completed
+	//PIXEL SHADER - completed
+	//OUTPUT MERGER - completed
+
+	//Create our Vertex Buffer - completed
+	//Draw - completed
+
+
+
+
+
 	/*Display display;
 	display.Initialize(L"My3DApp", screenHeight, screenWidth);
 	while (display.ProcessMessages() == true) {
@@ -81,7 +99,9 @@ int main()
 
 #pragma endregion Window init
 
-
+/////////////////////////////////////////////////////////////////////////////
+///Done
+/////////////////////////////////////////////////////////////////////////////
 //	D3D_FEATURE_LEVEL featureLevel[] = { D3D_FEATURE_LEVEL_11_1 };
 //
 //	DXGI_SWAP_CHAIN_DESC swapDesc = {};
@@ -119,6 +139,8 @@ int main()
 //		nullptr,
 //		&context);
 //
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 //	if(FAILED(res)) {
 //		
 //	}

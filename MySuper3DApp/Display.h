@@ -20,7 +20,8 @@ private:
 	//LRESULT WndProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam);
 public:
 
-	bool Initialize(WindowContainer* pWindowContainer, LPCWSTR appName, int height, int width);
+	bool Initialize(WindowContainer* pWindowContainer, LPCWSTR appName, int width, int height);
 	bool ProcessMessages();
+	HWND GetHWND() const;
 	~Display();
 };
