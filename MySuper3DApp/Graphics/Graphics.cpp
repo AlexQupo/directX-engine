@@ -15,11 +15,12 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 
 void Graphics::RenderFrame()
 {
-	float bgcolor[] = { 0.0f, 0.0f, 1.0f, 1.0f }; //цвет задника
+	float bgcolor[] = { 0.0f, 0.0f, 0.0f, 1.0f }; //цвет задника
 	this->deviceContext->ClearRenderTargetView(this->renderTargetView.Get(), bgcolor);
 
 	this->deviceContext->IASetInputLayout(this->vertexShader.GetInputLayout());
 	this->deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	this->deviceContext->RSSetState(this->rasterizerState.Get());
 
 	this->deviceContext->VSSetShader(vertexShader.GetShader(), NULL, 0);
 	this->deviceContext->PSSetShader(pixelShader.GetShader(), NULL, 0);
@@ -143,6 +144,20 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 	this->deviceContext->RSSetViewports(1, &viewport);
 	//END RASTERIZER
 
+	//Create Rasterizer State
+	D3D11_RASTERIZER_DESC rasterizerDesc;
+	ZeroMemory(&rasterizerDesc, sizeof(D3D11_RASTERIZER_DESC));
+
+	rasterizerDesc.FillMode = D3D11_FILL_MODE::D3D11_FILL_SOLID;
+	rasterizerDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_BACK;
+	hres = this->device->CreateRasterizerState(&rasterizerDesc, this->rasterizerState.GetAddressOf());
+	if (FAILED(hres))
+	{
+		ErrorLogger::Log(hres, "Failed to create rasterizer state.");
+		return false;
+	}
+
+
 	return true;
 }
 
@@ -179,6 +194,15 @@ bool Graphics::InitializeShaders() //INPUT ASSEBLER
 			D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA,
 			0
 		},
+		{
+			"COLOR",
+			0,
+			DXGI_FORMAT::DXGI_FORMAT_R32G32B32_FLOAT,
+			0,
+			D3D11_APPEND_ALIGNED_ELEMENT,
+			D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA,
+			0
+		},
 	};
 
 	UINT numElements = ARRAYSIZE(layout);
@@ -196,9 +220,9 @@ bool Graphics::InitializeScene()
 {
 	Vertex v[] =
 	{
-		Vertex(0.0f, -0.1f), //Center Point
-		Vertex(-0.1f, 0.0f), //Left Point
-		Vertex(0.1f, 0.0f), //Right Point
+		Vertex(-0.5f,-0.5f,1.0f,0.0f,0.0f), //Bottom Left Red Point
+		Vertex(0.0f,0.5f,0.0f,1.0f,0.0f), //Top Middle Green Point
+		Vertex(0.5f,-0.5f,0.0f,0.0f,1.0f), //Bottom Right Blue Point
 	};
 
 	D3D11_BUFFER_DESC vertexBufferDesc;
