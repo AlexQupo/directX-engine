@@ -50,25 +50,53 @@ bool Display::Initialize(WindowContainer* pWindowContainer, LPCWSTR appName, int
 	//WndProc = MessageHandler;
 	RegisterWindowClass();
 
-	RECT windowRect = { 0,0,static_cast<LONG>(clientWidth), static_cast<LONG>(clientHeight) };
-	AdjustWindowRect(&windowRect, WS_EX_OVERLAPPEDWINDOW, FALSE);
 
 
-	//Стиль окна
-	auto dwStyle = WS_SYSMENU | WS_CAPTION | WS_MINIMIZEBOX | WS_THICKFRAME;
-	//Положение окна на экране. В даннос случае окно будет отображено посередине.
-	auto posX = (GetSystemMetrics(SM_CXSCREEN) - clientWidth) / 2;
-	auto posY = (GetSystemMetrics(SM_CYSCREEN) - clientHeight) / 2;
-	//Обработчик окна
-	hWnd = CreateWindowEx(WS_EX_APPWINDOW, applicationName, applicationName,
-		dwStyle,
-		posX, posY,
-		windowRect.right - windowRect.left,
-		windowRect.bottom - windowRect.top,
-		nullptr, 
-		nullptr, 
-		hInstance, 
+	auto dwStyle = WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU;
+	//WS_SYSMENU | WS_CAPTION | WS_MINIMIZEBOX | WS_THICKFRAME
+
+	int centerScreenX = GetSystemMetrics(SM_CXSCREEN) / 2 - this->clientWidth / 2;
+	int centerScreenY = GetSystemMetrics(SM_CYSCREEN) / 2 - this->clientHeight / 2;
+
+	RECT wr; //Widow Rectangle
+	wr.left = centerScreenX;
+	wr.top = centerScreenY;
+	wr.right = wr.left + this->clientWidth;
+	wr.bottom = wr.top + this->clientHeight;
+	AdjustWindowRect(&wr, dwStyle, FALSE);
+
+	this->hWnd = CreateWindowEx(0, //Extended Windows style - we are using the default. For other options, see: https://msdn.microsoft.com/en-us/library/windows/desktop/ff700543(v=vs.85).aspx
+		this->applicationName, //Window class name
+		this->applicationName, //Window Title
+		dwStyle, //Windows style
+		wr.left, //Window X Position
+		wr.top, //Window Y Position
+		wr.right - wr.left, //Window Width
+		wr.bottom - wr.top, //Window Height
+		nullptr, //Handle to parent of this window. Since this is the first window, it has no parent window.
+		nullptr, //Handle to menu or child window identifier. Can be set to NULL and use menu in WindowClassEx if a menu is desired to be used.
+		this->hInstance, //Handle to the instance of module to be used with this window
 		pWindowContainer); //Param to create window
+
+	//RECT windowRect = { 0,0,static_cast<LONG>(clientWidth), static_cast<LONG>(clientHeight) };
+	//AdjustWindowRect(&windowRect, WS_EX_OVERLAPPEDWINDOW, FALSE);
+
+
+	////Стиль окна
+	//auto dwStyle = WS_SYSMENU | WS_CAPTION | WS_MINIMIZEBOX | WS_THICKFRAME;
+	////Положение окна на экране. В даннос случае окно будет отображено посередине.
+	//auto posX = (GetSystemMetrics(SM_CXSCREEN) - clientWidth) / 2;
+	//auto posY = (GetSystemMetrics(SM_CYSCREEN) - clientHeight) / 2;
+	////Обработчик окна
+	//hWnd = CreateWindowEx(WS_EX_APPWINDOW, applicationName, applicationName,
+	//	dwStyle,
+	//	posX, posY,
+	//	windowRect.right - windowRect.left,
+	//	windowRect.bottom - windowRect.top,
+	//	nullptr, 
+	//	nullptr, 
+	//	hInstance, 
+	//	pWindowContainer); //Param to create window
 
 	if(hWnd == nullptr) {
 		//ErrorLogger::Log(GetLastError(),"CreateWindowEX Failed for window: " + applicationName);

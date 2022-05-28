@@ -64,7 +64,7 @@ int main()
 	//WNDCLASSEX wc;
 	LPCWSTR applicationName = L"My3DApp";
 	int screenWidth = 800;
-	int screenHeight = 800;
+	int screenHeight = 600;
 	//HINSTANCE hInstance = GetModuleHandle(nullptr);
 	//HWND hWnd;
 
