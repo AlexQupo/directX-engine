@@ -27,15 +27,21 @@ void Graphics::RenderFrame()
 	this->deviceContext->VSSetShader(vertexShader.GetShader(), NULL, 0);
 	this->deviceContext->PSSetShader(pixelShader.GetShader(), NULL, 0);
 
-	UINT stride = sizeof(Vertex);
 	UINT offset = 0;
 
+	//Update Constant Buffer
+	constantBuffer.data.xOffset = 0.0f;
+	constantBuffer.data.yOffset = 0.5f;
+	if(!constantBuffer.ApplyChanges())
+		return;
+	this->deviceContext->VSSetConstantBuffers(0, 1, this->constantBuffer.GetAddressOf());
+	
 	//SQUARE
 	this->deviceContext->PSSetShaderResources(0, 1, this->myTexture.GetAddressOf());
-	this->deviceContext->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
+	this->deviceContext->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), vertexBuffer.StridePtr(), &offset);
 	this->deviceContext->IASetIndexBuffer(indicesBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 
-	this->deviceContext->DrawIndexed(6, 0, 0);
+	this->deviceContext->DrawIndexed(indicesBuffer.BufferSize(), 0, 0);
 
 	//Draw Text
 	spriteBatch->Begin();
@@ -306,30 +312,8 @@ bool Graphics::InitializeScene()
 		Vertex(0.5f,  -0.5f, 1.0f, 1.0f, 1.0f), //Bottom Right	[3]
 	};
 
-	DWORD indices[] =
-	{
-		0, 1, 2,
-		0, 2, 3
-	};
-
-	D3D11_BUFFER_DESC vertexBufferDesc;
-	ZeroMemory(&vertexBufferDesc, sizeof(vertexBufferDesc));
-
-	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = sizeof(Vertex) * ARRAYSIZE(v);
-	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vertexBufferDesc.CPUAccessFlags = 0;
-	vertexBufferDesc.MiscFlags = 0;
-
-	D3D11_SUBRESOURCE_DATA vertexBufferData;
-	ZeroMemory(&vertexBufferData, sizeof(vertexBufferData));
-	vertexBufferData.pSysMem = v;
-
-	HRESULT hres = this->device->CreateBuffer(
-		&vertexBufferDesc, 
-		&vertexBufferData, 
-		this->vertexBuffer.GetAddressOf()
-	);
+	//Load Vertex Data
+	HRESULT hres = this->vertexBuffer.Initialize(this->device.Get(), v, ARRAYSIZE(v));
 
 	if (FAILED(hres))
 	{
@@ -337,22 +321,19 @@ bool Graphics::InitializeScene()
 		return false;
 	}
 
+	DWORD indices[] =
+	{
+		0, 1, 2,
+		0, 2, 3
+	};
+		
 	//Load Index Data
-	D3D11_BUFFER_DESC indexBufferDesc;
-	ZeroMemory(&indexBufferDesc, sizeof(indexBufferDesc));
-	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	indexBufferDesc.ByteWidth = sizeof(DWORD) * ARRAYSIZE(indices);
-	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	indexBufferDesc.CPUAccessFlags = 0;
-	indexBufferDesc.MiscFlags = 0;
+	hres = this->indicesBuffer.Initialize(this->device.Get(), indices, ARRAYSIZE(indices));
 
-	D3D11_SUBRESOURCE_DATA indexBufferData;
-	indexBufferData.pSysMem = indices;
-	hres = device->CreateBuffer(&indexBufferDesc, &indexBufferData, indicesBuffer.GetAddressOf());
 	if (FAILED(hres))
 	{
 		ErrorLogger::Log(hres, "Failed to create indices buffer.");
-		return hres;
+		return false;
 	}
 
 	//LOAD TEXTURE
@@ -363,6 +344,15 @@ bool Graphics::InitializeScene()
 		return false;
 	}
 
+	//Initialize Constant Buffer(s)
+
+
+	hres = this->constantBuffer.Initialize(this->device.Get(), this->deviceContext.Get());
+	if (FAILED(hres))
+	{
+		ErrorLogger::Log(hres, "Failed to initialize constant buffer.");
+		return false;
+	}
 
 	return true;
 }
