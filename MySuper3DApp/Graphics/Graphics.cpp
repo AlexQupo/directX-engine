@@ -23,19 +23,19 @@ void Graphics::RenderFrame()
 	this->deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	this->deviceContext->RSSetState(this->rasterizerState.Get());
 	this->deviceContext->OMSetDepthStencilState(this->depthStencilState.Get(), 0);
+	this->deviceContext->PSSetSamplers(0, 1, this->samplerState.GetAddressOf());
 	this->deviceContext->VSSetShader(vertexShader.GetShader(), NULL, 0);
 	this->deviceContext->PSSetShader(pixelShader.GetShader(), NULL, 0);
 
 	UINT stride = sizeof(Vertex);
 	UINT offset = 0;
 
-	//Red Triangle
+	//SQUARE
+	this->deviceContext->PSSetShaderResources(0, 1, this->myTexture.GetAddressOf());
 	this->deviceContext->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
-	this->deviceContext->Draw(3, 0);
+	this->deviceContext->IASetIndexBuffer(indicesBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 
-	//Green Triangle
-	this->deviceContext->IASetVertexBuffers(0, 1, vertexBuffer2.GetAddressOf(), &stride, &offset);
-	this->deviceContext->Draw(3, 0);
+	this->deviceContext->DrawIndexed(6, 0, 0);
 
 	//Draw Text
 	spriteBatch->Begin();
@@ -219,6 +219,24 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 	spriteBatch = std::make_unique<DirectX::SpriteBatch>(this->deviceContext.Get());
 	spriteFont = std::make_unique<DirectX::SpriteFont>(this->device.Get(), L"Data\\Fonts\\calibri_light_16.spritefont");
 
+	//TEXTURING
+	//Create sampler description for sampler state
+	D3D11_SAMPLER_DESC sampDesc;
+	ZeroMemory(&sampDesc, sizeof(sampDesc));
+	sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+	sampDesc.MinLOD = 0;
+	sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
+	hres = this->device->CreateSamplerState(&sampDesc, this->samplerState.GetAddressOf()); //Create sampler state
+	if (FAILED(hres))
+	{
+		ErrorLogger::Log(hres, "Failed to create sampler state.");
+		return false;
+	}
+
 	return true;
 }
 
@@ -256,9 +274,9 @@ bool Graphics::InitializeShaders() //INPUT ASSEBLER
 			0
 		},
 		{
-			"COLOR",
+			"TEXCOORD",
 			0,
-			DXGI_FORMAT::DXGI_FORMAT_R32G32B32_FLOAT,
+			DXGI_FORMAT::DXGI_FORMAT_R32G32_FLOAT,
 			0,
 			D3D11_APPEND_ALIGNED_ELEMENT,
 			D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA,
@@ -279,11 +297,19 @@ bool Graphics::InitializeShaders() //INPUT ASSEBLER
 
 bool Graphics::InitializeScene()
 {
+	//Textured Square
 	Vertex v[] =
 	{
-		Vertex(-0.5f,-0.5f,1.0f,1.0f,0.0f,0.0f), //Bottom Left Red Point
-		Vertex(0.0f,0.5f,1.0f,1.0f,0.0f,0.0f), //Top Middle Green Point
-		Vertex(0.5f,-0.5f,1.0f,1.0f,0.0f,0.0f), //Bottom Right Blue Point
+		Vertex(-0.5f,  -0.5f, 1.0f, 0.0f, 1.0f), //Bottom Left	[0] 
+		Vertex(-0.5f,   0.5f, 1.0f, 0.0f, 0.0f), //Top Left		[1]
+		Vertex(0.5f,   0.5f, 1.0f, 1.0f, 0.0f), //Top Right		[2]
+		Vertex(0.5f,  -0.5f, 1.0f, 1.0f, 1.0f), //Bottom Right	[3]
+	};
+
+	DWORD indices[] =
+	{
+		0, 1, 2,
+		0, 2, 3
 	};
 
 	D3D11_BUFFER_DESC vertexBufferDesc;
@@ -311,37 +337,32 @@ bool Graphics::InitializeScene()
 		return false;
 	}
 
-	//Triangle 2
+	//Load Index Data
+	D3D11_BUFFER_DESC indexBufferDesc;
+	ZeroMemory(&indexBufferDesc, sizeof(indexBufferDesc));
+	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	indexBufferDesc.ByteWidth = sizeof(DWORD) * ARRAYSIZE(indices);
+	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	indexBufferDesc.CPUAccessFlags = 0;
+	indexBufferDesc.MiscFlags = 0;
 
-	Vertex v2[] =
-	{
-		Vertex(-0.25f,-0.25f,0.0f,0.0f,1.0f,0.0f), //Bottom Left Red Point
-		Vertex(0.0f,0.25f,0.0f,0.0f,1.0f,0.0f), //Top Middle Green Point
-		Vertex(0.25f,-0.25f,0.0f,0.0f,1.0f,0.0f), //Bottom Right Blue Point
-	};
-
-	ZeroMemory(&vertexBufferDesc, sizeof(vertexBufferDesc));
-
-	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = sizeof(Vertex) * ARRAYSIZE(v2);
-	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vertexBufferDesc.CPUAccessFlags = 0;
-	vertexBufferDesc.MiscFlags = 0;
-
-	ZeroMemory(&vertexBufferData, sizeof(vertexBufferData));
-	vertexBufferData.pSysMem = v2;
-
-	hres = this->device->CreateBuffer(
-		&vertexBufferDesc,
-		&vertexBufferData,
-		this->vertexBuffer2.GetAddressOf()
-	);
-
+	D3D11_SUBRESOURCE_DATA indexBufferData;
+	indexBufferData.pSysMem = indices;
+	hres = device->CreateBuffer(&indexBufferDesc, &indexBufferData, indicesBuffer.GetAddressOf());
 	if (FAILED(hres))
 	{
-		ErrorLogger::Log(hres, "Failed to create vertex buffer.");
+		ErrorLogger::Log(hres, "Failed to create indices buffer.");
+		return hres;
+	}
+
+	//LOAD TEXTURE
+	hres = DirectX::CreateWICTextureFromFile(this->device.Get(), L"Data\\Textures\\chest.png", nullptr, myTexture.GetAddressOf());
+	if (FAILED(hres))
+	{
+		ErrorLogger::Log(hres, "Failed to create wic texture from file.");
 		return false;
 	}
+
 
 	return true;
 }
