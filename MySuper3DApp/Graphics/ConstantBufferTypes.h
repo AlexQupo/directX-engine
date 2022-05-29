@@ -3,6 +3,5 @@
 
 struct CB_VS_vertexshader
 {
-	float xOffset = 0; //4bytes
-	float yOffset = 0; //4bytes
+	DirectX::XMMATRIX mat;
 };
