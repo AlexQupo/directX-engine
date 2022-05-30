@@ -9,7 +9,10 @@
 #include "IndexBuffer.h"
 #include "ConstantBuffer.h"
 #include "Camera.h"
-#include "..\Timer.h"
+#include "..\\Timer.h"
+#include "ImGUI\\imgui.h"
+#include "ImGUI\\imgui_impl_win32.h"
+#include "ImGUI\\imgui_impl_dx11.h"
 
 class Graphics
 {

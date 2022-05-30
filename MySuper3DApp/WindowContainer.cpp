@@ -20,7 +20,11 @@ WindowContainer::WindowContainer()
 	}
 }
 
+extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT WindowContainer::WndProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam) {
+	if (ImGui_ImplWin32_WndProcHandler(hwnd, umessage, wparam, lparam))
+		return true;
+
 	switch (umessage) {
 	//Keyboard Messages
 	case WM_KEYDOWN: 
