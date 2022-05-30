@@ -77,8 +77,9 @@ void Graphics::RenderFrame()
 	ImGui::NewFrame();
 	//Create ImGui Test Window
 	ImGui::Begin("Test");
-	ImGui::SetNextWindowSize(ImVec2(100, 100), 0);
-	ImGui::Text("This HOLLY COW");
+	//YOUR GUI HERE
+	//
+	//
 	ImGui::End();
 	//Assemble Together Draw Data
 	ImGui::Render();
