@@ -1,5 +1,7 @@
 #include "Graphics.h"
 
+//#include <DirectXMath.h>
+
 bool Graphics::Initialize(HWND hwnd, int width, int height)
 {
 	this->windowWidth = width;
@@ -11,8 +13,8 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 
 	if (!InitializeShaders())
 		return false;
-	if (!InitializeScene())
-		return false;
+	//if (!InitializeScene())
+	//	return false;
 
 	//Setup ImGui
 	IMGUI_CHECKVERSION();
@@ -36,8 +38,8 @@ void Graphics::RenderFrame()
 	this->deviceContext->RSSetState(this->rasterizerState.Get());
 	this->deviceContext->OMSetDepthStencilState(this->depthStencilState.Get(), 0);
 	this->deviceContext->PSSetSamplers(0, 1, this->samplerState.GetAddressOf());
-	this->deviceContext->VSSetShader(vertexShader.GetShader(), NULL, 0);
-	this->deviceContext->PSSetShader(pixelShader.GetShader(), NULL, 0);
+	this->deviceContext->VSSetShader(vertexShader.GetShader(), nullptr, 0);
+	this->deviceContext->PSSetShader(pixelShader.GetShader(), nullptr, 0);
 
 	UINT offset = 0;
 
@@ -71,6 +73,8 @@ void Graphics::RenderFrame()
 	spriteFont->DrawString(spriteBatch.get(), StringConverter::StringToWide(fpsString).c_str(), DirectX::XMFLOAT2(0, 0), DirectX::Colors::White, 0.0f, DirectX::XMFLOAT2(0.0f, 0.0f), DirectX::XMFLOAT2(1.0f, 1.0f));
 	spriteBatch->End();
 
+	std::string testText = "Im Test button";
+	static int counter = 0;
 	// Start the Dear ImGui frame
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
@@ -80,6 +84,11 @@ void Graphics::RenderFrame()
 	//YOUR GUI HERE
 	//
 	//
+	if (ImGui::Button(testText.c_str()))
+		counter += 1;
+		std::string clickC = "Click count: " + std::to_string(counter);
+		ImGui::Text(clickC.c_str());
+
 	ImGui::End();
 	//Assemble Together Draw Data
 	ImGui::Render();
@@ -284,7 +293,7 @@ bool Graphics::InitializeDirectX(HWND hwnd)
 	return true;
 }
 
-bool Graphics::InitializeShaders() //INPUT ASSEBLER
+bool Graphics::InitializeShaders() //INPUT ASSEMBLER
 {
 	//VERTEX SHADER
 	std::wstring shaderfolder = L"";
@@ -326,6 +335,15 @@ bool Graphics::InitializeShaders() //INPUT ASSEBLER
 			D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA,
 			0
 		},
+		{
+			"COLOR",
+			0,
+			DXGI_FORMAT::DXGI_FORMAT_R32G32B32_FLOAT,
+			0,
+			D3D11_APPEND_ALIGNED_ELEMENT,
+			D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA,
+			0
+		},
 	};
 
 	UINT numElements = ARRAYSIZE(layout);
@@ -339,19 +357,11 @@ bool Graphics::InitializeShaders() //INPUT ASSEBLER
 	return true;
 }
 
-bool Graphics::InitializeScene()
+bool Graphics::InitializeScene(Vertex v[], int numOfVertices, DWORD indices[], int numOfIndices)
 {
-	//Textured Square
-	Vertex v[] =
-	{
-		Vertex(-0.5f,  -0.5f, 0.0f, 0.0f, 1.0f), //Bottom Left	[0] 
-		Vertex(-0.5f,   0.5f, 0.0f, 0.0f, 0.0f), //Top Left		[1]
-		Vertex(0.5f,   0.5f, 0.0f, 1.0f, 0.0f), //Top Right		[2]
-		Vertex(0.5f,  -0.5f, 0.0f, 1.0f, 1.0f), //Bottom Right	[3]
-	};
 
 	//Load Vertex Data
-	HRESULT hres = this->vertexBuffer.Initialize(this->device.Get(), v, ARRAYSIZE(v));
+	HRESULT hres = this->vertexBuffer.Initialize(this->device.Get(), v, numOfVertices);
 
 	if (FAILED(hres))
 	{
@@ -359,14 +369,8 @@ bool Graphics::InitializeScene()
 		return false;
 	}
 
-	DWORD indices[] =
-	{
-		0, 1, 2,
-		0, 2, 3
-	};
-		
 	//Load Index Data
-	hres = this->indicesBuffer.Initialize(this->device.Get(), indices, ARRAYSIZE(indices));
+	hres = this->indicesBuffer.Initialize(this->device.Get(), indices, numOfIndices);
 
 	if (FAILED(hres))
 	{
@@ -382,8 +386,7 @@ bool Graphics::InitializeScene()
 		return false;
 	}
 
-	//Initialize Constant Buffer(s)
-
+	//Initialize Constant Buffer
 
 	hres = this->constantBuffer.Initialize(this->device.Get(), this->deviceContext.Get());
 	if (FAILED(hres))
@@ -392,6 +395,7 @@ bool Graphics::InitializeScene()
 		return false;
 	}
 
+	//Camera Settings
 	camera.SetPosition(0.0f, 0.0f, -2.0f);
 	camera.SetProjectionValues(90.0f, static_cast<float>(windowWidth) / static_cast<float>(windowHeight), 0.1f, 1000.0f);
 

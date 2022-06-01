@@ -1,10 +1,95 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="DisplayWin32">
-    <Position X="7.75" Y="2.75" Width="1.5" />
+  <Class Name="WindowContainer">
+    <Position X="6.25" Y="4" Width="1.5" />
+    <AssociationLine Name="keyboard" Type="KeyboardClass" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.125" Y="5.296" />
+        <Point X="7.125" Y="9.17" />
+        <Point X="13.812" Y="9.17" />
+        <Point X="13.812" Y="7.767" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="mouse" Type="MouseClass" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.875" Y="5.296" />
+        <Point X="6.875" Y="9.815" />
+        <Point X="17.25" Y="9.815" />
+        <Point X="17.25" Y="8.536" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>QAABAAAAAAAAAABABAAAIAAAAAAAAAAAAAIAQAAAAAA=</HashCode>
-      <FileName>DisplayWin32.h</FileName>
+      <HashCode>AAAAAAAIAAAAggAAAAAAAEAAAAEAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>WindowContainer.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="display" />
+      <Field Name="keyboard" />
+      <Field Name="gfx" />
+      <Field Name="mouse" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Engine">
+    <Position X="3.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAQAABEAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Engine.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Display">
+    <Position X="9" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAgQBABAAAIAIAAAAEAAAAAgIAAAAAAAA=</HashCode>
+      <FileName>Display.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KeyboardClass">
+    <Position X="13" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAQoiAAACAEQAAACAAAAQAAwAAIAgQCAAAAAAFAAAQA=</HashCode>
+      <FileName>Keyboard\KeyboardClass.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KeyboardEvent">
+    <Position X="14.75" Y="2.75" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="KeyboardEvent::EventType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Keyboard\KeyboardEvent.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AgAgAAAAAAAAAAAAAAgUAAAAAAABAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Keyboard\KeyboardEvent.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MouseEvent">
+    <Position X="18.25" Y="2.75" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="MouseEvent::EventType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Mouse\MouseEvent.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAgAAAgAAAABAAEAAABgAAAAYAA=</HashCode>
+      <FileName>Mouse\MouseEvent.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Graphics">
+    <Position X="11" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AICQAUADAgAEAQAAFmAAAAAAAIBAAQAAIQBAAAAADIA=</HashCode>
+      <FileName>Graphics\Graphics.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MouseClass">
+    <Position X="16.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAEICAQAAAgAEEAAEAwAAHIAAAABAABgAAQIaAA=</HashCode>
+      <FileName>Mouse\MouseClass.h</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

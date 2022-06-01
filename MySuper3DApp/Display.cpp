@@ -2,7 +2,7 @@
 
 LRESULT CALLBACK HandleMsgRedirect(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam) {
 	switch (umessage) {
-		//all other messages
+
 	case WM_CLOSE:
 	{
 		DestroyWindow(hwnd);
@@ -49,8 +49,6 @@ bool Display::Initialize(WindowContainer* pWindowContainer, LPCWSTR appName, int
 	clientWidth = width;
 	//WndProc = MessageHandler;
 	RegisterWindowClass();
-
-
 
 	auto dwStyle = WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU;
 	//WS_SYSMENU | WS_CAPTION | WS_MINIMIZEBOX | WS_THICKFRAME

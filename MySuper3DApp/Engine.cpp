@@ -12,6 +12,13 @@ bool Engine::Initialize(LPCWSTR appName, int width, int height) {
 	return true;
 }
 
+bool Engine::InitializeScene(Vertex v[], int numOfVertices, DWORD indices[], int numOfIndices) {
+	if (!gfx.InitializeScene(v, numOfVertices, indices, numOfIndices))
+		return false;
+	return true;
+}
+
+
 bool Engine::ProcessMessages() {
 	return this->display.ProcessMessages();
 }

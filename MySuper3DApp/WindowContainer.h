@@ -14,10 +14,4 @@ public:
 	WindowContainer();
 	LRESULT WndProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam);
 
-	/*bool Initialize(LPCWSTR appName, int width, int height);
-	bool ProcessMessages();
-
-
-	LRESULT WindowProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam);
-	void Update();*/
 };

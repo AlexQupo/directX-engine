@@ -7,6 +7,7 @@ class Engine : WindowContainer
 {
 public:
 	bool Initialize(LPCWSTR appName, int width, int height);
+	bool InitializeScene(Vertex v[], int numOfVertices, DWORD indices[], int numOfIndices);
 	bool ProcessMessages();
 
 	void Update();

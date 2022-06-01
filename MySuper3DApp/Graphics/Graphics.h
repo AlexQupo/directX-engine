@@ -19,11 +19,12 @@ class Graphics
 public:
 	bool Initialize(HWND hwnd, int width, int height);
 	void RenderFrame();
+	bool InitializeScene(Vertex v[], int numOfVertices, DWORD indices[], int numOfIndices);
 	Camera camera;
 private:
 	bool InitializeDirectX(HWND hwnd);
 	bool InitializeShaders();
-	bool InitializeScene();
+	//bool InitializeScene();
 
 	Microsoft::WRL::ComPtr<ID3D11Device> device;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> deviceContext;
