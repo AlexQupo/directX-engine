@@ -11,6 +11,11 @@ public:
 
 	void Update();
 	void RenderFrame();
+
+	bool AddComponent();
+
+
+
 private:
 	Timer timer;
 };

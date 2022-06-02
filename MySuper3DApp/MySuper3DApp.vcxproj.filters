@@ -37,6 +37,12 @@
     <Filter Include="Source Files\Graphics\ImGui">
       <UniqueIdentifier>{353bd967-041e-43db-8032-15f1e5cea15b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Pong">
+      <UniqueIdentifier>{8e35aa6e-4f03-46d0-bd1e-02f8a3fb4807}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Pong">
+      <UniqueIdentifier>{ea25758d-ea49-4bc8-bb69-c9bf75e79c1c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MySuper3DApp.cpp">
@@ -104,6 +110,9 @@
     </ClCompile>
     <ClCompile Include="Graphics\ImGui\imgui_widgets.cpp">
       <Filter>Source Files\Graphics\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponent.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -190,6 +199,9 @@
     </ClInclude>
     <ClInclude Include="Graphics\ImGui\imstb_truetype.h">
       <Filter>Header Files\Graphics\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponent.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
