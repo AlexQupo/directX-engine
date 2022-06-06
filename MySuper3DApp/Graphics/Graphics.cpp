@@ -397,3 +397,8 @@ bool Graphics::InitializeScene()
 
 	return true;
 }
+
+
+ID3D11Device& Graphics::GetDevice() {
+	return this->device.GetAddressOf();
+}

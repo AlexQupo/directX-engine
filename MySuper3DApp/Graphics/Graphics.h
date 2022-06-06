@@ -53,4 +53,6 @@ private:
 	int windowHeight = 0;
 
 	Timer fpsTimer;
+
+	ID3D11Device& GetDevice();
 };

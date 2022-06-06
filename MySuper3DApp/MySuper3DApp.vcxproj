@@ -169,11 +169,13 @@
     <ClCompile Include="Mouse\MouseEvent.cpp" />
     <ClCompile Include="MySuper3DApp.cpp" />
     <ClCompile Include="Graphics\Shaders.cpp" />
+    <ClCompile Include="Shapes.cpp" />
     <ClCompile Include="StringConverter.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="WindowContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Ball.h" />
     <ClInclude Include="GameComponent.h" />
     <ClInclude Include="Graphics\Camera.h" />
     <ClInclude Include="Graphics\ConstantBuffer.h" />
@@ -198,6 +200,8 @@
     <ClInclude Include="Mouse\MouseClass.h" />
     <ClInclude Include="Mouse\MouseEvent.h" />
     <ClInclude Include="Graphics\Shaders.h" />
+    <ClInclude Include="Platform.h" />
+    <ClInclude Include="Shapes.h" />
     <ClInclude Include="StringConverter.h" />
     <ClInclude Include="Graphics\Vertex.h" />
     <ClInclude Include="Graphics\VertexBuffer.h" />
