@@ -19,6 +19,11 @@ class Graphics
 public:
 	bool Initialize(HWND hwnd, int width, int height);
 	void RenderFrame();
+
+
+	ID3D11Device* GetDevice() const;
+	ID3D11DeviceContext* GetDeviceContext() const;
+
 	Camera camera;
 private:
 	bool InitializeDirectX(HWND hwnd);
@@ -53,6 +58,4 @@ private:
 	int windowHeight = 0;
 
 	Timer fpsTimer;
-
-	ID3D11Device& GetDevice();
 };

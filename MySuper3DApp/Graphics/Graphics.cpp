@@ -399,6 +399,15 @@ bool Graphics::InitializeScene()
 }
 
 
-ID3D11Device& Graphics::GetDevice() {
-	return this->device.GetAddressOf();
+//ID3D11Device* Graphics::GetDevice() {
+//	return this->device.Get();
+//}
+
+ID3D11Device* Graphics::GetDevice() const {
+	return this->device.Get();
 }
+
+ID3D11DeviceContext* Graphics::GetDeviceContext() const {
+	return this->deviceContext.Get();
+}
+

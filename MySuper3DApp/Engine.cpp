@@ -74,3 +74,14 @@ void Engine::RenderFrame()
 }
 
 
+
+ID3D11Device* Engine::GetDevice() const {
+	return gfx.GetDevice();
+}
+ID3D11DeviceContext* Engine::GetDeviceContext() const {
+	return gfx.GetDeviceContext();
+}
+
+
+
+
