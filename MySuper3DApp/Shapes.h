@@ -11,14 +11,17 @@ class Engine;
 class Shapes {
 private:
 	ConstantBuffer<CB_VS_vertexshader> constantBuffer;
-	VertexBuffer<Vertex> vertexBuffer;
 	IndexBuffer indicesBuffer;
-
-	VertexShader vertexShader;
+	VertexBuffer<Vertex> vertexBuffer;
+	//VertexShader vertexShader;
 	PixelShader pixelShader;
 
 	std::vector<Vertex> vertices;
 	std::vector<DWORD> indices;
+
+	/*Vertex vertices[] = {Vertex(2.0f,0.0f,0.0f,0.0f,0.0f),Vertex(2.0f,0.0f,0.0f,0.0f,0.0f)};
+	DWORD indices[] =  nullptr;*/
+
 
 public:
 	bool Initialize(Engine* engine);

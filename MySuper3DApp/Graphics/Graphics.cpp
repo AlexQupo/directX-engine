@@ -58,6 +58,7 @@ void Graphics::RenderFrame()
 
 	this->deviceContext->DrawIndexed(indicesBuffer.BufferSize(), 0, 0);
 
+#pragma region Text
 	//Draw Text
 	static int fpsCounter = 0;
 	static std::string fpsString = "FPS: 0";
@@ -70,7 +71,8 @@ void Graphics::RenderFrame()
 	spriteBatch->Begin();
 	spriteFont->DrawString(spriteBatch.get(), StringConverter::StringToWide(fpsString).c_str(), DirectX::XMFLOAT2(0, 0), DirectX::Colors::White, 0.0f, DirectX::XMFLOAT2(0.0f, 0.0f), DirectX::XMFLOAT2(1.0f, 1.0f));
 	spriteBatch->End();
-
+#pragma endregion
+#pragma region ImGui
 	// Start the Dear ImGui frame
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
@@ -85,6 +87,7 @@ void Graphics::RenderFrame()
 	ImGui::Render();
 	//Render Draw Data
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+#pragma endregion ImGui
 
 	this->swapchain->Present(0, NULL);
 }
@@ -317,15 +320,24 @@ bool Graphics::InitializeShaders() //INPUT ASSEBLER
 			D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA,
 			0
 		},
+		//{
+		//	"TEXCOORD",
+		//	0,
+		//	DXGI_FORMAT::DXGI_FORMAT_R32G32_FLOAT,
+		//	0,
+		//	D3D11_APPEND_ALIGNED_ELEMENT,
+		//	D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA,
+		//	0
+		//},
 		{
-			"TEXCOORD",
+			"COLOR",
 			0,
-			DXGI_FORMAT::DXGI_FORMAT_R32G32_FLOAT,
+			DXGI_FORMAT::DXGI_FORMAT_R32G32B32_FLOAT,
 			0,
 			D3D11_APPEND_ALIGNED_ELEMENT,
 			D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA,
 			0
-		},
+		}
 	};
 
 	UINT numElements = ARRAYSIZE(layout);

@@ -28,6 +28,9 @@ bool Shapes::Initialize(Engine* engine) {
 		0, 2, 3
 	};
 
+	vertices.push_back().back()
+
+
 	//Load Index Data
 	hres = this->indicesBuffer.Initialize(engine->GetDevice(), indices, ARRAYSIZE(indices));
 
@@ -47,7 +50,7 @@ bool Shapes::Initialize(Engine* engine) {
 
 	//Initialize Constant Buffer(s)
 
-
+	//одинаковый для всех?
 	hres = this->constantBuffer.Initialize(engine->GetDevice(), engine->GetDeviceContext());
 	if (FAILED(hres))
 	{
@@ -55,11 +58,22 @@ bool Shapes::Initialize(Engine* engine) {
 		return false;
 	}
 
-
+	engine->GetDeviceContext();
+	engine->GetDevice();
+	
 
 }
 
 void Shapes::Update() {
+	//engine->
+
+	UINT offset = 0;
+	this->deviceContext->PSSetShaderResources(0, 1, this->myTexture.GetAddressOf());
+	this->deviceContext->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), vertexBuffer.StridePtr(), &offset);
+	this->deviceContext->IASetIndexBuffer(indicesBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+
+	this->deviceContext->DrawIndexed(indicesBuffer.BufferSize(), 0, 0);
+
 
 }
 
