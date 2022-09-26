@@ -1,6 +1,8 @@
 #pragma once
 #include "WindowContainer.h"
 #include "Timer.h"
+//After
+#include "GameObject.h"
 
 
 class Engine : WindowContainer
@@ -12,6 +14,10 @@ public:
 
 	void Update();
 	void RenderFrame();
+
+	//After
+	std::vector<GameObject*> Components;
+
 private:
 	Timer timer;
 };
